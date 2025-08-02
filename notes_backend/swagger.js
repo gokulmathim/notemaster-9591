@@ -4,12 +4,24 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'My Express API',
+      title: 'NoteMaster API',
       version: '1.0.0',
-      description: 'A simple Express API documented with Swagger',
-    }
+      description: 'RESTful API for NoteMaster note-taking application',
+    },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT'
+        }
+      }
+    },
+    security: [
+      { bearerAuth: [] }
+    ],
   },
-  apis: ['./src/routes/*.js'], // Path to the API docs
+  apis: ['./src/routes/*.js'],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
