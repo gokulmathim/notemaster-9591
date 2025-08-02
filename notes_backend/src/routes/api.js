@@ -2,6 +2,7 @@ const express = require('express');
 const userController = require('../controllers/user');
 const noteController = require('../controllers/note');
 const { authenticateJWT } = require('../middleware');
+const demoController = require('../controllers/demo');
 
 const router = express.Router();
 
@@ -237,5 +238,48 @@ router.delete('/notes/:id', authenticateJWT, noteController.delete.bind(noteCont
  *         description: List of tags
  */
 router.get('/tags', authenticateJWT, noteController.tags.bind(noteController));
+
+/**
+ * @swagger
+ * /api/demo/echo-notes:
+ *   post:
+ *     tags: [Demo]
+ *     summary: Echo back notes for demonstration purposes
+ *     description: |
+ *       **Demo endpoint only!**  
+ *       This API simply echos back the notes array provided in the request body for frontend demo/testing.
+ *       No data is persisted here.  
+ *       In production, note data is stored in browser localStorage on the frontend.
+ *     requestBody:
+ *       description: Notes array to echo back
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               notes:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *     responses:
+ *       200:
+ *         description: Echos back notes provided
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 echo:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                 meta:
+ *                   type: object
+ *                   properties:
+ *                     note:
+ *                       type: string
+ */
+router.post('/demo/echo-notes', demoController.echoNotes.bind(demoController));
 
 module.exports = router;
